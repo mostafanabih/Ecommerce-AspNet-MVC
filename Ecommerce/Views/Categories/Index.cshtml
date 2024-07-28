@@ -21,9 +21,11 @@
 					<td>@Html.DisplayFor(x=>item.Name)</td>
 					<td>@Html.DisplayFor(x=>item.Description)</td>
 					<td>
-						<a class="btn btn-outline-info"><i class="fas fa-regular fa-pencil mr-2"></i>Edit</a>
-						<a class="btn btn-outline-secondary"><i class="fas fa-regular fa-eye mr-2"></i>Details</a>
-						<a class="btn btn-outline-danger"><i class="fas fa-regular fa-trash mr-2"></i>Delete</a>
+						<a class="btn btn-outline-info" asp-action="Edit" asp-route-id="@item.Id" ><i class="fas fa-regular fa-pencil"></i>Edit</a>
+						<a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-regular fa-eye"></i>Details</a>
+						<a asp-action="Delete" asp-route-id="@item.Id">
+							<input  class="btn btn-outline-danger" type="submit" value="Delete" onclick="return confirm('Are You Sure To Delete This Category')">
+						</a>
 					</td>
 				</tr>
 				}
@@ -32,4 +34,9 @@
 	</table>
 	</div>
 
+</div>
+<div class="text-white" style="position:fixed;right:30px;bottom:100px;">
+	<a asp-action="Create" asp-controller="Categories" class="btn btn-outline-success">
+		<i class="fas fa-regular fa-plus-square mr-3"></i>
+		Create</a>
 </div>
