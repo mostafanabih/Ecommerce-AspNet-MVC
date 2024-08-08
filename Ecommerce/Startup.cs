@@ -26,15 +26,14 @@ namespace Ecommerce
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Data.EcommerceDbContext>(options =>
+            services.AddDbContext<EcommerceDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddControllersWithViews();
             services.AddScoped<ICategoryServices, CategoryServices>();
+            services.AddScoped<IProductServices, ProductServices>();
         }
-
-        
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -62,7 +61,8 @@ namespace Ecommerce
                     name: "default",
                     pattern: "{controller=Products}/{action=Index}/{id?}");
             });
-            AppDbInitializer.Seed(app); 
+
+            AppDbInitializer.Seed(app);
         }
     }
 }
