@@ -9,5 +9,10 @@ namespace Ecommerce.Models
         {
             throw new NotImplementedException();
         }
+
+        public static implicit operator Icollection<T>(HashSet<OrderItem> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

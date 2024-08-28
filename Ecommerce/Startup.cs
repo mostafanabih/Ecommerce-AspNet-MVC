@@ -1,7 +1,9 @@
 using Ecommerce.Data;
+using Ecommerce.Data.Cart;
 using Ecommerce.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +35,10 @@ namespace Ecommerce
             services.AddControllersWithViews();
             services.AddScoped<ICategoryServices, CategoryServices>();
             services.AddScoped<IProductServices, ProductServices>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(x => ShoppingCart.GetShoppingCart(x));
+            services.AddSession();
+            services.AddScoped<IOrderServices, OrderServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +58,7 @@ namespace Ecommerce
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
