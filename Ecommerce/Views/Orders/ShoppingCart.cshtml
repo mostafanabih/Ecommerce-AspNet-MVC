@@ -51,12 +51,58 @@
 					<i class="fas fa-regular fa-refresh mr-2"></i>
 					Continue Shopping
 				</a>
-				<a class="btn btn-outline-success" asp-controller="Orders" asp-action="CompleteOrder">
+				<div id="paypal-button">
+
+				</div>
+				@*<a class="btn btn-outline-success" asp-controller="orders" asp-action="completeorder">
 					<i class="fas fa-regular fa-check mr-2"></i>
-					Complete Order
-				</a>
+					complete order
+				</a>*@
 			</div>
 		</div>
 		</div>
 	</div>
 </div>
+@section Scripts{
+	<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+	<script>
+		var _total = @Html.Raw(ViewBag.Total);
+		paypal.Button.render({
+			//configure environment
+			env:'sandbox',
+			client:{
+				sandbox:'AQOf7ujZiLwUoVaepLtkuKRy70MQd8YPGAmEkSIqJmGBxLrnwyvFZkRU0Q6fHR3ibMuVsAKcTyJ1e2Tp'
+			},
+			//customize button (optional)
+			style:{
+			     color:'gold',
+				 size:'small',
+				 shape:'pill'
+			},
+			//enable paynow checkout flow (optional)
+			commit:true,
+			//setup payment
+			payment:function(data,actions){
+			    return actions.payment.create({
+					transactions:[{
+					  amount:{
+					    total:_total,
+						currency:'USD'
+					  }
+					}]
+				})
+			},
+			//excute the payment
+			onAuthorize:function(data,actions){
+				return actions.payment.get().then(function() {
+                var Url = '@Url.Action("CompleteOrder", "Orders")';
+				console.log(Url);
+				window.location.href = Url;
+
+				});
+			}
+
+
+		},"#paypal-button");
+	</script>
+}
